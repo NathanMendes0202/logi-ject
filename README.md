@@ -1,177 +1,182 @@
- ---logi-ject---
+# 📦 logi-ject
 
-Sistema de Gestão de Estoque e Operações Logísticas
+## Sistema Full Stack de Gestão de Estoque e Operações Logísticas
 
-O logi-ject é uma aplicação Full Stack desenvolvida para simular um sistema corporativo de gestão de estoque e operações logísticas.
+O **logi-ject** é uma aplicação Full Stack de gestão de estoque e operações logísticas, desenvolvida para simular um sistema corporativo utilizado em operações de armazenagem, controle de produtos, movimentação de estoque, pedidos e inventário.
 
-O projeto permite gerenciar produtos, categorias, fornecedores, armazéns, pedidos e inventários, além de acompanhar informações operacionais por meio de dashboard e relatórios.
+O projeto utiliza **React + TypeScript** no frontend, **Node.js + Express + TypeScript** no backend e **PostgreSQL + Prisma ORM** para persistência. O ambiente também possui configuração com **Docker Compose**.
 
-A aplicação foi desenvolvida utilizando React + TypeScript no frontend, Node.js + Express + TypeScript no backend e PostgreSQL + Prisma ORM para persistência dos dados.
+> **Projeto de portfólio:** desenvolvido para demonstrar conhecimentos em desenvolvimento Full Stack, APIs REST, autenticação, autorização, modelagem relacional, regras de negócio, controle de estoque, Docker e organização de aplicações corporativas.
 
--- Preview:
+---
 
-Dashboard
+# 🖥️ Screenshots
 
+## Dashboard
 
+![Dashboard](./Screenshots/Dashboard.png)
 
+Visão geral da operação e dos principais indicadores do sistema.
 
-O dashboard apresenta uma visão geral da operação, permitindo acompanhar os principais indicadores do sistema de forma centralizada.
+## Produtos
 
-📦 Produtos
+![Produtos](./Screenshots/Produtos.png)
 
+Gerenciamento de produtos, incluindo informações como SKU, código de barras, categoria, fornecedor, estoque mínimo/máximo, preços e status.
 
+## Categorias
 
-
-Tela responsável pelo gerenciamento dos produtos cadastrados no sistema.
-
-Entre as informações trabalhadas estão:
-
-Produto
-SKU
-Código de barras
-Categoria
-Fornecedor
-Unidade
-Estoque mínimo
-Estoque máximo
-Preços
-Status
-
-Também são utilizados recursos de pesquisa, filtros e paginação.
-
-🗂️ Categorias
-
-
-
+![Categorias](./Screenshots/Categorias.png)
 
 Gerenciamento das categorias utilizadas para organizar os produtos.
 
-🚚 Fornecedores
+## Fornecedores
 
-
-
+![Fornecedores](./Screenshots/Fornecedores.png)
 
 Cadastro e gerenciamento dos fornecedores relacionados aos produtos.
 
-🏭 Armazéns
+## Armazéns
 
+![Armazéns](./Screenshots/Armazens.png)
 
+Gerenciamento dos armazéns utilizados pela operação logística e organização física do estoque.
 
+## Pedidos
 
-Gerenciamento dos armazéns utilizados pela operação logística.
+![Pedidos](./Screenshots/Pedidos.png)
 
-A estrutura permite trabalhar com diferentes locais de armazenamento e organizar o estoque por unidade.
+Gerenciamento dos pedidos logísticos e acompanhamento do fluxo operacional.
 
-📋 Pedidos
+## Inventário
 
+![Inventário](./Screenshots/Inventario.png)
 
+Conferência física do estoque e identificação de divergências.
 
+## Relatórios
 
-Tela de gerenciamento dos pedidos logísticos.
+![Relatórios](./Screenshots/Relatorios.png)
 
-O sistema trabalha com diferentes etapas do fluxo operacional, permitindo acompanhar o estado dos pedidos ao longo do processo.
+Consulta e análise das informações da operação, com filtros e recursos de exportação.
 
-📦 Inventário
+---
 
+# 🎯 Objetivos
 
+O projeto foi desenvolvido para representar uma aplicação mais próxima de um sistema corporativo real, trabalhando não apenas com CRUDs, mas também com relacionamentos e regras de negócio.
 
+Principais objetivos:
 
-Módulo destinado ao controle de inventário e conferência do estoque.
+- Desenvolver uma aplicação Full Stack completa.
+- Criar uma API REST modular.
+- Implementar autenticação e autorização.
+- Modelar um banco de dados relacional.
+- Controlar estoque por produto, armazém e localização.
+- Registrar movimentações de estoque.
+- Representar processos de pedidos.
+- Realizar inventário e controle de divergências.
+- Criar dashboard e relatórios.
+- Utilizar Docker para padronizar o ambiente.
+- Demonstrar separação de responsabilidades e organização de código.
 
-O processo permite comparar a quantidade registrada no sistema com a quantidade encontrada durante a contagem física.
+---
 
-📊 Relatórios
+# 🚀 Funcionalidades
 
+## 🔐 Autenticação e autorização
 
+- Login
+- Logout
+- JWT
+- Access Token
+- Refresh Token
+- Cookies HttpOnly
+- Hash de senha com bcrypt
+- Proteção de rotas
+- RBAC
 
+### Perfis
 
-Área destinada à consulta e análise das informações da operação.
+| Perfil | Descrição |
+|---|---|
+| `ADMIN` | Administração e gerenciamento geral |
+| `SUPERVISOR` | Supervisão das operações |
+| `OPERATOR` | Execução das operações permitidas |
 
-Os dados podem ser filtrados e exportados para utilização fora da aplicação.
+## 📦 Produtos
 
--- Objetivo
+- Cadastro e edição
+- Pesquisa
+- Filtros
+- Paginação
+- Ativação/desativação
+- Categorias
+- Fornecedores
+- Estoque mínimo e máximo
+- Preços
 
-O objetivo do projeto é demonstrar, na prática, o desenvolvimento de uma aplicação Full Stack com características encontradas em sistemas corporativos.
+## 🗂️ Categorias
 
-Mais do que um CRUD simples, o logi-ject reúne diferentes módulos relacionados ao processo logístico:
+- Cadastro
+- Consulta
+- Edição
+- Ativação/desativação
+- Associação com produtos
 
-                    ┌──────────────┐
-                    │    Usuários  │
-                    └──────┬───────┘
-                           │
-                           ▼
-┌─────────────┐      ┌──────────────┐      ┌──────────────┐
-│  Produtos   │─────▶│   Estoque   │◀─────│  Armazéns    │
-└──────┬──────┘      └──────┬───────┘      └──────────────┘
-       │                     │
-       ▼                     ▼
-┌─────────────┐      ┌──────────────┐
-│ Fornecedores│      │ Movimentações│
-└─────────────┘      └──────┬───────┘
-                            │
-                            ▼
-                     ┌──────────────┐
-                     │    Pedidos   │
-                     └──────┬───────┘
-                            │
-                            ▼
-                     ┌──────────────┐
-                     │  Inventário  │
-                     └──────────────┘
+## 🚚 Fornecedores
 
- Funcionalidades:
+- Cadastro
+- Edição
+- Consulta
+- Status
+- Associação com produtos
 
-Autenticação
-Login
-Logout
-JWT
-Refresh Token
-Cookies HttpOnly
-Hash de senha
-Controle de sessão
-Proteção de rotas
-Perfis
+## 🏭 Armazéns e localizações
 
-O estoque é relacionado a:
+A estrutura de armazenamento considera:
 
-Produto
-   +
+```text
 Armazém
-   +
-Localização
+   │
+   └── Localização
+          │
+          └── Produto
+```
 
-Isso permite representar produtos armazenados em diferentes locais dentro da operação.
+## 📊 Controle de estoque
 
--- Movimentações
+O estoque é controlado por:
 
-O sistema suporta diferentes tipos de movimentação:
+```text
+Produto + Armazém + Localização
+```
 
-Entrada
-IN
+## 🔄 Movimentações
 
-Entrada de produtos no estoque.
+### Entrada
 
-Saída
-OUT
+`IN` — registra a entrada de produtos.
 
-Saída de produtos do estoque.
+### Saída
 
-Transferência
-TRANSFER
+`OUT` — registra a retirada de produtos.
 
-Movimentação de produtos entre localizações.
+### Transferência
 
-Ajuste
-ADJUSTMENT
+`TRANSFER` — movimenta produtos entre localizações.
 
-Correção de estoque, normalmente relacionada a divergências ou ajustes operacionais.
+### Ajuste
 
--- Pedidos
+`ADJUSTMENT` — corrige quantidades de estoque.
 
-O sistema permite trabalhar com pedidos de entrada e saída.
+## 📋 Pedidos
 
-Fluxo operacional:
+O sistema trabalha com pedidos de entrada e saída.
 
+Fluxo:
+
+```text
 Pedido
    ↓
 Separação
@@ -179,65 +184,60 @@ Separação
 Conferência
    ↓
 Expedição
+```
 
-Status utilizados:
+Status:
 
+```text
 PENDING
 SEPARATION
 CONFERENCE
 SHIPPED
 CANCELLED
+```
 
--- Inventário
+## 📦 Inventário
 
-O módulo de inventário permite realizar a conferência física do estoque.
-
-Fluxo:
-
-Estoque registrado
-       ↓
+```text
+Estoque do sistema
+        ↓
 Contagem física
-       ↓
+        ↓
 Comparação
-       ↓
-Identificação da diferença
-       ↓
+        ↓
+Divergência
+        ↓
 Ajuste
+```
 
-Isso permite representar um processo comum em operações de armazenagem.
+## 📈 Dashboard e relatórios
 
--- Dashboard e relatórios
+- Indicadores
+- Estoque
+- Movimentações
+- Pedidos
+- Inventários
+- Dados recentes
+- Filtros
+- Exportação
 
-O sistema possui uma área de acompanhamento operacional com:
+---
 
-Indicadores
-Movimentações
-Estoque
-Pedidos
-Inventários
-Dados recentes
-Relatórios
-Filtros
-Exportação
+# 🏗️ Arquitetura
 
--- Arquitetura
+```text
 ┌───────────────────────────────────────┐
 │               FRONTEND                │
-│                                       │
 │        React + TypeScript + Vite      │
-│                                       │
 └──────────────────┬────────────────────┘
-                   │
                    │ HTTP / REST
                    ▼
 ┌───────────────────────────────────────┐
 │                BACKEND                │
-│                                       │
 │       Node.js + Express + TypeScript  │
 │                                       │
 │ Routes → Controllers → Services       │
-│                 │                     │
-│                 ▼                     │
+│                 ↓                     │
 │              Prisma                   │
 └──────────────────┬────────────────────┘
                    │
@@ -245,38 +245,48 @@ Exportação
 ┌───────────────────────────────────────┐
 │              PostgreSQL               │
 └───────────────────────────────────────┘
+```
 
--- Stacks --
+---
 
-Frontend:
+# 🛠️ Stack
 
-React:
-TypeScript
-Vite
-React 
+### Frontend
 
-Backend:
-Node.js
-Express
-TypeScript
-Prisma
-Zod
-JWT
-bcrypt
-Banco de dados
-PostgreSQL
-Infraestrutura
-Docker
-Docker Compose
-Nginx
-GitHub Actions
+- React
+- TypeScript
+- Vite
+- React Router
+- Axios
 
- Banco de dados
+### Backend
 
-O banco utiliza PostgreSQL com Prisma ORM.
+- Node.js
+- Express
+- TypeScript
+- Prisma ORM
+- Zod
+- JWT
+- bcrypt
+
+### Banco
+
+- PostgreSQL 16
+
+### Infraestrutura
+
+- Docker
+- Docker Compose
+- Nginx
+- GitHub Actions
+
+---
+
+# 🗄️ Banco de dados
 
 Principais entidades:
 
+```text
 User
 Category
 Supplier
@@ -290,142 +300,172 @@ OrderItem
 Inventory
 InventoryItem
 RefreshToken
+```
 
-Os relacionamentos permitem representar os principais processos da aplicação, como produtos associados a categorias e fornecedores, estoque associado a armazéns e localizações, pedidos com seus respectivos itens e inventários relacionados aos produtos armazenados.
+Principais relacionamentos:
 
--- Segurança
+```text
+Category
+   └── Product
+          ├── Stock
+          ├── StockMovement
+          ├── OrderItem
+          └── InventoryItem
 
-O projeto possui mecanismos de segurança para autenticação e autorização.
+Warehouse
+   ├── Location
+   ├── Stock
+   ├── StockMovement
+   ├── Order
+   └── Inventory
 
-Autenticação
-JWT
-Access Token
-Refresh Token
-Cookies HttpOnly
-bcrypt
-Controle de sessão
-Autorização
+Order
+   └── OrderItem
 
-RBAC baseado nos perfis:
+Inventory
+   └── InventoryItem
 
-ADMIN
-SUPERVISOR
-OPERATOR
-Validação
+User
+   ├── StockMovement
+   ├── Order
+   ├── Inventory
+   └── RefreshToken
+```
 
-Os dados recebidos pela API são validados utilizando Zod.
+---
 
--- Docker
+# 🔒 Segurança
 
-O projeto possui configuração Docker Compose para os principais serviços.
+- JWT
+- Access Token
+- Refresh Token
+- Cookies HttpOnly
+- bcrypt
+- RBAC
+- Middleware de autenticação
+- Middleware de autorização
+- Validação com Zod
 
-┌────────────────────┐
-│      Frontend      │
-│      Nginx         │
-│       :8080        │
-└─────────┬──────────┘
-          │
-          ▼
-┌────────────────────┐
-│      Backend       │
-│   Node + Express   │
-│       :3333        │
-└─────────┬──────────┘
-          │
-          ▼
-┌────────────────────┐
-│     PostgreSQL     │
-│       :5432        │
-└────────────────────┘
+---
 
-Também está configurado o pgAdmin para administração do banco.
+# 🐳 Docker
 
+Serviços disponíveis:
 
--- Instalação
+| Serviço | Porta |
+|---|---:|
+| Frontend | `8080` |
+| Backend | `3333` |
+| PostgreSQL | `5432` |
+| pgAdmin | `5050` |
 
-Pré-requisitos:
-Node.js
-npm
-Docker
-Docker Compose
-Git
-Clone
-git clone https://github.com/SEU-USUARIO/logi-ject.git
+Execute:
 
-cd logi-ject
-Backend
-cd backend
-
-npm install
-
-Configure o .env:
-
-PORT=3333
-
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/logi_ject?schema=public"
-
-JWT_SECRET="change-this-development-secret"
-
-JWT_REFRESH_SECRET="change-this-development-refresh-secret"
-
-JWT_ACCESS_EXPIRES_IN="15m"
-
-JWT_REFRESH_EXPIRES_IN_DAYS=7
-
-FRONTEND_URL="http://localhost:5173"
-
-NODE_ENV="development"
-
-Gere o Prisma Client:
-
-npm run db:generate
-
-Execute as migrations:
-
-npm run db:migrate -- --name init
-
-Execute o seed:
-
-npm run db:seed
-
-Inicie o backend:
-
-npm run dev
-Frontend
-
-Em outro terminal:
-
-cd frontend
-
-npm install
-
-npm run dev
-
-A aplicação ficará disponível em:
-
-http://localhost:5173
-
- Executando com Docker
-
-Na raiz do projeto:
-
+```bash
 docker compose up --build
+```
 
 Aplicação:
 
+```text
 http://localhost:8080
+```
 
-Backend:
+API:
 
+```text
 http://localhost:3333
+```
 
 pgAdmin:
 
+```text
 http://localhost:5050
+```
 
+---
 
--- Estrutura:
+# ⚙️ Execução local
 
+## Pré-requisitos
+
+- Node.js
+- npm
+- Docker
+- Docker Compose
+- Git
+
+## 1. Clonar
+
+```bash
+git clone https://github.com/SEU-USUARIO/logi-ject.git
+cd logi-ject
+```
+
+## 2. Subir PostgreSQL
+
+```bash
+docker compose up -d postgres pgadmin
+```
+
+## 3. Backend
+
+```bash
+cd backend
+npm install
+```
+
+Crie `.env`:
+
+```env
+PORT=3333
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/logi_ject?schema=public"
+JWT_SECRET="change-this-development-secret"
+JWT_REFRESH_SECRET="change-this-development-refresh-secret"
+JWT_ACCESS_EXPIRES_IN="15m"
+JWT_REFRESH_EXPIRES_IN_DAYS=7
+FRONTEND_URL="http://localhost:5173"
+NODE_ENV="development"
+```
+
+Depois:
+
+```bash
+npm run db:generate
+npm run db:migrate -- --name init
+npm run db:seed
+npm run dev
+```
+
+API:
+
+```text
+http://localhost:3333
+```
+
+## 4. Frontend
+
+Em outro terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Aplicação:
+
+```text
+http://localhost:5173
+```
+
+> **Importante:** nunca publique o `.env` no GitHub. Utilize `.env.example` para documentar as variáveis.
+
+---
+
+# 📁 Estrutura
+
+```text
 logi-ject/
 │
 ├── backend/
@@ -433,7 +473,6 @@ logi-ject/
 │   │   ├── migrations/
 │   │   ├── schema.prisma
 │   │   └── seed.ts
-│   │
 │   └── src/
 │       ├── config/
 │       ├── controllers/
@@ -471,13 +510,15 @@ logi-ject/
 ├── docker-compose.yml
 ├── .gitignore
 └── README.md
+```
 
--- API
+---
 
-A aplicação utiliza uma API REST organizada por módulos.
+# 🔌 API
 
-Principais recursos:
+Principais grupos:
 
+```text
 /api/auth
 /api/users
 /api/categories
@@ -490,124 +531,142 @@ Principais recursos:
 /api/orders
 /api/inventory
 /api/reports
+```
 
 Exemplos:
 
+```http
 POST /api/auth/login
-
 GET /api/products
-
 GET /api/stock
-
 POST /api/movements/in
-
 POST /api/movements/out
-
 POST /api/movements/transfer
-
 GET /api/orders
-
 GET /api/inventory
-
 GET /api/reports
+```
 
--- Principais fluxos:
+---
 
-Entrada de estoque:
+# 🔄 Principais fluxos
 
-Recebimento
-    ↓
-Produto
-    ↓
-Armazém
-    ↓
-Localização
-    ↓
-Entrada no estoque
+### Entrada
 
-Saída:
+```text
+Recebimento → Produto → Armazém → Localização → Estoque
+```
 
-Pedido
-    ↓
-Separação
-    ↓
-Conferência
-    ↓
-Expedição
-    ↓
-Saída do estoque
+### Saída
 
-Transferência:
+```text
+Pedido → Separação → Conferência → Expedição → Estoque
+```
 
-Localização A
-      ↓
-   Produto
-      ↓
-Localização B
+### Transferência
 
-Inventário:
+```text
+Localização A → Produto → Localização B
+```
 
-Estoque do sistema
-        ↓
-Contagem física
-        ↓
-Comparação
-        ↓
-Divergência
-        ↓
-Ajuste
+### Inventário
 
--- CI
+```text
+Estoque → Contagem física → Comparação → Divergência → Ajuste
+```
 
-O projeto possui workflow de integração contínua utilizando GitHub Actions.
+---
 
-O pipeline realiza verificações relacionadas à construção da aplicação e validação do código.
+# 🔄 CI
 
--- Conhecimentos demonstrados
+O projeto possui workflow de integração contínua com GitHub Actions para automatizar verificações de build e qualidade durante o desenvolvimento.
 
-Este projeto demonstra conhecimentos em:
+---
 
-React
-TypeScript
-Node.js
-Express
-APIs REST
-PostgreSQL
-Prisma ORM
-Modelagem de banco de dados
-JWT
-Refresh Token
-RBAC
-Autenticação
-Autorização
-Validação de dados
-Docker
-Docker Compose
-Nginx
-GitHub Actions
-CI
-Migrations
-Seed
-Gestão de estoque
-Inventário
-Processos logísticos
-Relatórios
-Exportação de dados
+# 📚 Conhecimentos demonstrados
 
--- Autor
+- React
+- TypeScript
+- Node.js
+- Express
+- APIs REST
+- PostgreSQL
+- Prisma ORM
+- Modelagem relacional
+- JWT
+- Refresh Tokens
+- RBAC
+- Autenticação
+- Autorização
+- Zod
+- Docker
+- Docker Compose
+- Nginx
+- GitHub Actions
+- CI
+- Migrations
+- Seed
+- Gestão de estoque
+- Inventário
+- Processos logísticos
+- Relatórios
+- Exportação de dados
+- Arquitetura Full Stack
 
-Nathan Mendes
+---
+
+# 🔮 Próximas evoluções
+
+- [ ] Swagger / OpenAPI
+- [ ] Testes unitários
+- [ ] Testes de integração
+- [ ] Testes E2E
+- [ ] Redis
+- [ ] BullMQ
+- [ ] Notificações de estoque mínimo
+- [ ] Auditoria detalhada
+- [ ] Leitura de código de barras
+- [ ] Integração com transportadoras
+- [ ] Rastreamento de pedidos
+- [ ] Deploy em cloud
+- [ ] Monitoramento
+- [ ] Logs centralizados
+
+---
+
+# 👨‍💻 Autor
+
+## Nathan Mendes
 
 Desenvolvedor Full Stack com foco em aplicações web, APIs, sistemas corporativos e integração entre sistemas.
 
-LinkedIn:
+**Principais tecnologias:**
+
+```text
+PHP • Laravel • Node.js • React
+TypeScript • JavaScript • .NET
+MySQL • PostgreSQL • SQL
+Docker • AWS • Git
+```
+
+**LinkedIn:**  
 https://www.linkedin.com/in/nathan-mendes-77a288251
 
-GitHub:
-https://github.com/NathanMendes0202
+**GitHub:**  
+https://github.com/
 
-⭐ Sobre o projeto
+---
 
-O logi-ject foi desenvolvido como projeto de portfólio para demonstrar a construção de uma aplicação Full Stack com características de um sistema corporativo.
+# ⭐ Sobre o projeto
 
-A proposta combina interface web, API REST, autenticação, banco de dados relacional, regras de negócio, gestão de estoque, processos logísticos e infraestrutura utilizando Docker.
+O **logi-ject** foi desenvolvido como projeto de portfólio para demonstrar a construção de uma aplicação Full Stack com características de um sistema corporativo, combinando interface web, API REST, autenticação, autorização, banco de dados relacional, regras de negócio, gestão de estoque, processos logísticos, inventário, relatórios e infraestrutura com Docker.
+
+## 📸 Imagens
+
+Os screenshots utilizados neste README estão **anexados ao próprio projeto**, dentro da pasta:
+
+```text
+Screenshots/
+```
+
+As imagens são referenciadas por caminhos relativos (`./Screenshots/...`), portanto serão exibidas automaticamente quando o projeto for publicado no GitHub.
