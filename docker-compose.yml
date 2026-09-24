@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: logi-ject-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: logi_ject
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - logi_ject_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d logi_ject"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: logi-ject-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/logi_ject?schema=public
+      PORT: 3333
+      JWT_SECRET: change-this-development-secret
+      JWT_REFRESH_SECRET: change-this-development-refresh-secret
+      FRONTEND_URL: http://localhost:8080
+    command: sh -c "npx prisma db push && node dist/server.js"
+    ports:
+      - "3333:3333"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: logi-ject-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4:9
+    container_name: logi-ject-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@logiject.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  logi_ject_postgres_data:

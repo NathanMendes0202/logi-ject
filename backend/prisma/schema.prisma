@@ -1,0 +1,342 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  SUPERVISOR
+  OPERATOR
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum MovementType {
+  IN
+  OUT
+  TRANSFER
+  ADJUSTMENT
+}
+
+enum MovementReason {
+  PURCHASE
+  SALE
+  RETURN
+  DAMAGE
+  INVENTORY
+  TRANSFER
+  OTHER
+}
+
+enum StockMovementStatus {
+  COMPLETED
+  CANCELLED
+}
+
+enum OrderType {
+  INBOUND
+  OUTBOUND
+}
+
+enum OrderStatus {
+  PENDING
+  SEPARATION
+  CONFERENCE
+  SHIPPED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(OPERATOR)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  movements StockMovement[]
+  refreshTokens RefreshToken[]
+  orders Order[]
+  inventories Inventory[]
+
+  @@index([role])
+  @@index([active])
+  @@map("users")
+}
+
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  description String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Supplier {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  document  String?  @unique
+  email     String?
+  phone     String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@index([name])
+  @@map("suppliers")
+}
+
+model Product {
+  id              String        @id @default(uuid()) @db.Uuid
+  sku             String        @unique
+  barcode         String?       @unique
+  name            String
+  description     String?
+  unit            String        @default("UN")
+  weightGrams     Int?
+  lengthCm        Decimal?      @db.Decimal(10, 2)
+  widthCm         Decimal?      @db.Decimal(10, 2)
+  heightCm        Decimal?      @db.Decimal(10, 2)
+  minimumStock    Decimal       @default(0) @db.Decimal(14, 3)
+  maximumStock    Decimal?      @db.Decimal(14, 3)
+  costPrice       Decimal       @default(0) @db.Decimal(14, 2)
+  salePrice       Decimal?      @db.Decimal(14, 2)
+  status          ProductStatus @default(ACTIVE)
+  categoryId      String        @db.Uuid
+  supplierId      String?       @db.Uuid
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  category   Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  supplier   Supplier?      @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  stocks     Stock[]
+  movements  StockMovement[]
+  orderItems OrderItem[]
+  inventoryItems InventoryItem[]
+
+  @@index([name])
+  @@index([categoryId])
+  @@index([supplierId])
+  @@index([status])
+  @@map("products")
+}
+
+model Warehouse {
+  id          String     @id @default(uuid()) @db.Uuid
+  code        String     @unique
+  name        String
+  description String?
+  address     String?
+  city        String?
+  state       String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  locations Location[]
+  stocks    Stock[]
+  movements StockMovement[]
+  orders    Order[]
+  inventories Inventory[]
+
+  @@map("warehouses")
+}
+
+model Location {
+  id          String    @id @default(uuid()) @db.Uuid
+  code        String
+  name        String?
+  aisle       String?
+  rack        String?
+  shelf       String?
+  position    String?
+  active      Boolean   @default(true)
+  warehouseId String    @db.Uuid
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  stocks    Stock[]
+  movementsFrom StockMovement[] @relation("MovementFromLocation")
+  movementsTo   StockMovement[] @relation("MovementToLocation")
+  orderItems     OrderItem[]
+  inventoryItems InventoryItem[]
+
+  @@unique([warehouseId, code])
+  @@index([warehouseId])
+  @@map("locations")
+}
+
+model Stock {
+  id          String   @id @default(uuid()) @db.Uuid
+  quantity    Decimal  @default(0) @db.Decimal(14, 3)
+  reserved    Decimal  @default(0) @db.Decimal(14, 3)
+  productId   String   @db.Uuid
+  warehouseId String   @db.Uuid
+  locationId  String?  @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  location  Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+
+  @@unique([productId, warehouseId, locationId])
+  @@index([productId])
+  @@index([warehouseId])
+  @@index([locationId])
+  @@map("stocks")
+}
+
+model StockMovement {
+  id               String               @id @default(uuid()) @db.Uuid
+  type             MovementType
+  reason           MovementReason
+  status           StockMovementStatus  @default(COMPLETED)
+  quantity         Decimal              @db.Decimal(14, 3)
+  document         String?
+  notes            String?
+  productId        String               @db.Uuid
+  warehouseId      String               @db.Uuid
+  fromLocationId   String?              @db.Uuid
+  toLocationId     String?              @db.Uuid
+  userId           String               @db.Uuid
+  createdAt        DateTime             @default(now())
+
+  product      Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  warehouse    Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  fromLocation Location? @relation("MovementFromLocation", fields: [fromLocationId], references: [id], onDelete: SetNull)
+  toLocation   Location? @relation("MovementToLocation", fields: [toLocationId], references: [id], onDelete: SetNull)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([productId])
+  @@index([warehouseId])
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("stock_movements")
+}
+
+model Order {
+  id            String      @id @default(uuid()) @db.Uuid
+  code          String      @unique
+  type          OrderType
+  status        OrderStatus @default(PENDING)
+  notes         String?
+  document      String?
+  partnerName   String?
+  warehouseId   String      @db.Uuid
+  createdById   String      @db.Uuid
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  createdBy User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  items     OrderItem[]
+
+  @@index([type])
+  @@index([status])
+  @@index([warehouseId])
+  @@index([createdById])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String   @id @default(uuid()) @db.Uuid
+  quantity   Decimal  @db.Decimal(14, 3)
+  unitPrice  Decimal? @db.Decimal(14, 2)
+  productId  String   @db.Uuid
+  locationId String?  @db.Uuid
+  orderId    String   @db.Uuid
+
+  product  Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  location Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  order    Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([locationId])
+  @@index([orderId])
+  @@map("order_items")
+}
+
+
+enum InventoryStatus {
+  OPEN
+  COUNTING
+  CLOSED
+  CANCELLED
+}
+
+model Inventory {
+  id          String          @id @default(uuid()) @db.Uuid
+  code        String          @unique
+  status      InventoryStatus @default(OPEN)
+  notes       String?
+  warehouseId String          @db.Uuid
+  createdById String          @db.Uuid
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  closedAt    DateTime?
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  createdBy User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  items     InventoryItem[]
+
+  @@index([warehouseId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("inventories")
+}
+
+model InventoryItem {
+  id              String   @id @default(uuid()) @db.Uuid
+  systemQuantity  Decimal  @db.Decimal(14, 3)
+  countedQuantity Decimal? @db.Decimal(14, 3)
+  difference      Decimal? @db.Decimal(14, 3)
+  countedAt       DateTime?
+  notes           String?
+  inventoryId     String   @db.Uuid
+  productId       String   @db.Uuid
+  locationId      String?  @db.Uuid
+
+  inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  location  Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+
+  @@unique([inventoryId, productId, locationId])
+  @@index([inventoryId])
+  @@index([productId])
+  @@map("inventory_items")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @unique
+  userId    String   @db.Uuid
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}

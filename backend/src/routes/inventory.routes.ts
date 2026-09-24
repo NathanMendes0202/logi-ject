@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { authenticate, authorize } from "../middlewares/auth.js";
+import * as controller from "../controllers/inventory.controller.js";
+const router = Router();
+router.use(authenticate);
+router.get("/", controller.index);
+router.get("/:id", controller.show);
+router.post("/", authorize("ADMIN", "SUPERVISOR"), controller.create);
+router.patch("/:id/items/:itemId/count", authorize("ADMIN", "SUPERVISOR", "OPERATOR"), controller.count);
+router.post("/:id/close", authorize("ADMIN", "SUPERVISOR"), controller.close);
+export default router;
