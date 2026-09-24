@@ -96,14 +96,6 @@ Principais objetivos:
 - Proteção de rotas
 - RBAC
 
-### Perfis
-
-| Perfil | Descrição |
-|---|---|
-| `ADMIN` | Administração e gerenciamento geral |
-| `SUPERVISOR` | Supervisão das operações |
-| `OPERATOR` | Execução das operações permitidas |
-
 ## 📦 Produtos
 
 - Cadastro e edição
@@ -256,7 +248,7 @@ Ajuste
 - React
 - TypeScript
 - Vite
-- React Router
+- React
 - Axios
 
 ### Backend
@@ -302,35 +294,6 @@ InventoryItem
 RefreshToken
 ```
 
-Principais relacionamentos:
-
-```text
-Category
-   └── Product
-          ├── Stock
-          ├── StockMovement
-          ├── OrderItem
-          └── InventoryItem
-
-Warehouse
-   ├── Location
-   ├── Stock
-   ├── StockMovement
-   ├── Order
-   └── Inventory
-
-Order
-   └── OrderItem
-
-Inventory
-   └── InventoryItem
-
-User
-   ├── StockMovement
-   ├── Order
-   ├── Inventory
-   └── RefreshToken
-```
 
 ---
 
@@ -549,35 +512,8 @@ GET /api/reports
 
 ---
 
-# 🔄 Principais fluxos
 
-### Entrada
-
-```text
-Recebimento → Produto → Armazém → Localização → Estoque
-```
-
-### Saída
-
-```text
-Pedido → Separação → Conferência → Expedição → Estoque
-```
-
-### Transferência
-
-```text
-Localização A → Produto → Localização B
-```
-
-### Inventário
-
-```text
-Estoque → Contagem física → Comparação → Divergência → Ajuste
-```
-
----
-
-# 🔄 CI
+# CI
 
 O projeto possui workflow de integração contínua com GitHub Actions para automatizar verificações de build e qualidade durante o desenvolvimento.
 
@@ -615,45 +551,17 @@ O projeto possui workflow de integração contínua com GitHub Actions para auto
 
 ---
 
-# 🔮 Próximas evoluções
-
-- [ ] Swagger / OpenAPI
-- [ ] Testes unitários
-- [ ] Testes de integração
-- [ ] Testes E2E
-- [ ] Redis
-- [ ] BullMQ
-- [ ] Notificações de estoque mínimo
-- [ ] Auditoria detalhada
-- [ ] Leitura de código de barras
-- [ ] Integração com transportadoras
-- [ ] Rastreamento de pedidos
-- [ ] Deploy em cloud
-- [ ] Monitoramento
-- [ ] Logs centralizados
-
----
-
 # 👨‍💻 Autor
 
 ## Nathan Mendes
 
 Desenvolvedor Full Stack com foco em aplicações web, APIs, sistemas corporativos e integração entre sistemas.
 
-**Principais tecnologias:**
-
-```text
-PHP • Laravel • Node.js • React
-TypeScript • JavaScript • .NET
-MySQL • PostgreSQL • SQL
-Docker • AWS • Git
-```
-
 **LinkedIn:**  
 https://www.linkedin.com/in/nathan-mendes-77a288251
 
 **GitHub:**  
-https://github.com/
+https://github.com/NathanMendes0202
 
 ---
 
@@ -661,12 +569,3 @@ https://github.com/
 
 O **logi-ject** foi desenvolvido como projeto de portfólio para demonstrar a construção de uma aplicação Full Stack com características de um sistema corporativo, combinando interface web, API REST, autenticação, autorização, banco de dados relacional, regras de negócio, gestão de estoque, processos logísticos, inventário, relatórios e infraestrutura com Docker.
 
-## 📸 Imagens
-
-Os screenshots utilizados neste README estão **anexados ao próprio projeto**, dentro da pasta:
-
-```text
-Screenshots/
-```
-
-As imagens são referenciadas por caminhos relativos (`./Screenshots/...`), portanto serão exibidas automaticamente quando o projeto for publicado no GitHub.
